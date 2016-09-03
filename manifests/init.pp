@@ -1,45 +1,46 @@
 # == Class: playonlinux
 #
-# Full description of class playonlinux here.
+# This class installs playonlinux
 #
 # === Parameters
 #
 # Document parameters here.
+# [*ensure*]
+#   Value to be passed to ensure in the package resource. Defaults to present.
 #
-# [*sample_parameter*]
-#   Explanation of what this parameter affects and what it defaults to.
-#   e.g. "Specify one or more upstream ntp servers as an array."
+# [*needs_repository*]
+#   Whether or not an additional repository is needed to install the latest packages.
+#   Defaults to true on specific distributions (see params.pp) or false as a fallback.
 #
-# === Variables
+# [*repository_uri*]
+#   URI of the custom repository that contains the latest packages. Default to null.
 #
-# Here you should define a list of variables that this module would require.
+# [*repository_key*]
+#   URI of the custom repository's GPG key used to sign its packages. Default to null.
 #
-# [*sample_variable*]
-#   Explanation of how this variable affects the funtion of this class and if
-#   it has a default. e.g. "The parameter enc_ntp_servers must be set by the
-#   External Node Classifier as a comma separated list of hostnames." (Note,
-#   global variables should be avoided in favor of class parameters as
-#   of Puppet 2.6.)
+# [*repository_key_id*]
+#   Fingerprint of the custom repository's GPG key. Defaults to null.
 #
 # === Examples
 #
 #  class { 'playonlinux':
-#    servers => [ 'pool.ntp.org', 'ntp.local.company.com' ],
+#    $needs_repository = false,
 #  }
 #
 # === Authors
 #
-# Author Name <author@domain.com>
+# Diego Lima <diegolima.br@gmail.com>
 #
 # === Copyright
 #
-# Copyright 2016 Your name here, unless otherwise noted.
+# Copyright 2016 Diego Lima, unless otherwise noted.
 #
 class playonlinux(
   $ensure           = 'present',
   $needs_repository = $playonlinux::params::needs_repository,
   $repository_uri   = $playonlinux::params::repository_uri,
   $repository_key   = $playonlinux::params::repository_key,
+  $repository_key_id= $playonlinux::params::repository_key_id,
 ) inherits playonlinux::params {
   include apt
 
@@ -49,6 +50,7 @@ class playonlinux(
       release  => $::lsbdistcodename,
       repos    => 'main',
       key      => {
+        id     => $repository_key_id,
         source => $repository_key,
       },
     }
