@@ -1,7 +1,7 @@
 class playonlinux::params{
   case $::osfamily {
   'Debian': {
-    $package = 'playonlinux'
+    $package_name = 'playonlinux'
     case $::lsbdistid {
       'Ubuntu': {
         case $::lsbdistcodename {

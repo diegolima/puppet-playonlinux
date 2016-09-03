@@ -8,15 +8,24 @@
 # [*ensure*]
 #   Value to be passed to ensure in the package resource. Defaults to present.
 #
+# [*package_name*]
+#   Name of the playonlinux package to be installed. Defaults to playonlinux
+#   on specific distributions or null as a fallback.
+#
 # [*needs_repository*]
-#   Whether or not an additional repository is needed to install the latest packages.
-#   Defaults to true on specific distributions (see params.pp) or false as a fallback.
+#   Whether or not an additional repository is needed to install the latest
+#   packages.
+#
+#   Defaults to true on specific distributions (see params.pp) or false as
+#   a fallback.
 #
 # [*repository_uri*]
-#   URI of the custom repository that contains the latest packages. Default to null.
+#   URI of the custom repository that contains the latest packages.
+#   Default to null.
 #
 # [*repository_key*]
-#   URI of the custom repository's GPG key used to sign its packages. Default to null.
+#   URI of the custom repository's GPG key used to sign its packages.
+#   Default to null.
 #
 # [*repository_key_id*]
 #   Fingerprint of the custom repository's GPG key. Defaults to null.
@@ -35,6 +44,7 @@
 #
 class playonlinux(
   $ensure           = 'present',
+  $package_name     = $playonlinux::params::package_name,
   $needs_repository = $playonlinux::params::needs_repository,
   $repository_uri   = $playonlinux::params::repository_uri,
   $repository_key   = $playonlinux::params::repository_key,
@@ -54,7 +64,7 @@ class playonlinux(
     }
   }
 
-  package { $package:
+  package { $package_name:
     ensure => $ensure,
   }
 }
