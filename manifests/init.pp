@@ -23,9 +23,7 @@
 #
 # === Examples
 #
-#  class { 'playonlinux':
-#    $needs_repository = false,
-#  }
+#  class { 'playonlinux': }
 #
 # === Authors
 #
